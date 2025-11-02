@@ -1,5 +1,14 @@
 {
   "name": "cekta/framework",
+  "description": "small, fast framework for create API",
+  "type": "library",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "Evgeniy Kuvshinov",
+      "email": "smpl@itmywork.com"
+    }
+  ],
   "minimum-stability": "dev",
   "bin": [
     "./bin/cekta"
