@@ -1,0 +1,20 @@
+{
+  "name": "cekta/framework",
+  "minimum-stability": "dev",
+  "bin": [
+    "./bin/cekta"
+  ],
+  "require": {
+    "cekta/di": "^2.0",
+    "psr/http-server-handler": "^1.0",
+    "psr/http-server-middleware": "^1.0",
+    "spiral/roadrunner-http": "^3.5",
+    "nyholm/psr7": "^1.8",
+    "cekta/routing-nikic": "@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cekta\\Framework\\": "src/"
+    }
+  }
+}
