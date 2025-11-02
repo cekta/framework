@@ -20,9 +20,6 @@ readonly class DiscoverServiceProvider implements ServiceProvider
     public function register(Application $app): Application
     {
         foreach ($this->items as $item) {
-            if ($item == \Cekta\Framework\Pipeline::class) { // in_array ?
-                continue; // ignore
-            }
             try {
                 $class = new ReflectionClass($item);
             } catch (Throwable $e) {

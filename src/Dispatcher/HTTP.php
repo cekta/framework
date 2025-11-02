@@ -35,7 +35,7 @@ class HTTP
         }
     }
 
-    private function compileContainer(Configuration $configuration)
+    private function compileContainer(Configuration $configuration): void
     {
         file_put_contents(
             $configuration->container_filename,
