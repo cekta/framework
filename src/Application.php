@@ -27,7 +27,8 @@ class Application
         $app = new self();
         $app = $app_provider->register($app);
         return new Configuration(
-            container_filename: realpath($app->container_filename),
+            container_filename: file_exists($app->container_filename) ?
+                realpath($app->container_filename) : $app->container_filename,
             container_fqcn: $app->container_fqcn,
             containers: $app->containers,
             params: $app->params,
