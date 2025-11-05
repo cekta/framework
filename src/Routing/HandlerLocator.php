@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Cekta\Framework;
+namespace Cekta\Framework\Routing;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class HandlerLocator implements \Cekta\Routing\Nikic\HandlerLocator
+class HandlerLocator
 {
     private ContainerInterface $container;
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Cekta\Framework;
+namespace Cekta\Framework\Routing;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-class MiddlewareLocator implements \Cekta\Routing\Nikic\MiddlewareLocator
+class MiddlewareLocator
 {
     private ContainerInterface $container;
 
