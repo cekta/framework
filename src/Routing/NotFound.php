@@ -13,6 +13,6 @@ class NotFound implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return Response::json('404: not found', 404);
+        return Response::json(['message' => '404: not found'], 404);
     }
 }

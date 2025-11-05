@@ -18,55 +18,14 @@ class Router
      * }>
      */
     private array $routes;
+    private Dispatcher $dispatcher;
 
     public function __construct(
-        private string $handler_404 = NotFound::class,
-        private array $middlewares_404 = [],
-        private string $handler_405 = NotAllowed::class,
-        private array $middlewares_405 = [],
+        private readonly string $handler_404 = NotFound::class,
+        private readonly array $middlewares_404 = [],
+        private readonly string $handler_405 = NotAllowed::class,
+        private readonly array $middlewares_405 = [],
     ) {
-    }
-    
-    public function setRoute404(string $handler_404, array $middleware_404 = []): self
-    {
-        $this->handler_404 = $handler_404;
-        $this->middlewares_404 = $middleware_404;
-        return $this;
-    }
-
-    public function setRoute405(string $handler_405, array $middleware_405 = []): self
-    {
-        $this->handler_405 = $handler_405;
-        $this->middlewares_405 = $middleware_405;
-        return $this;
-    }
-
-    /**
-     * @return array{
-     *     handler: string,
-     *     middlewares: string[]
-     * }
-     */
-    public function getRoute405(): array
-    {
-        return [
-            'handler' => $this->handler_405,
-            'middlewares' => $this->middlewares_405
-        ];
-    }
-
-    /**
-     * @return array{
-     *     handler: string,
-     *     middlewares: string[]
-     * }
-     */
-    public function getRoute404(): array
-    {
-        return [
-            'handler' => $this->handler_404,
-            'middlewares' => $this->middlewares_404
-        ];
     }
 
     public function get(string $pattern, string $handler, array $middlewares = []): self
@@ -99,19 +58,62 @@ class Router
         return $this->route('OPTIONS', $pattern, $handler, $middlewares);
     }
 
-    // аналогично другие типы маршрутов
-
-    public function build(): Dispatcher
+    public function buildDispatcher(): Dispatcher
     {
-        $fast_route = FastRoute::recommendedSettings(function (\FastRoute\RouteCollector $r) {
-            foreach ($this->routes as $route) {
-                $r->addRoute($route['method'], $route['pattern'], [
+        if (empty($this->dispacher)) {
+            $fast_route = FastRoute::recommendedSettings(function (\FastRoute\RouteCollector $r) {
+                foreach ($this->routes as $route) {
+                    $r->addRoute($route['method'], $route['pattern'], [
+                        'handler' => $route['handler'],
+                        'middlewares' => $route['middlewares']
+                    ]);
+                }
+            }, '')->disableCache();
+            $this->dispatcher = $fast_route->dispatcher();
+        }
+        return $this->dispatcher;
+    }
+
+    /**
+     * @param string $httpMethod (GET, POST, PATCH, HEAD, OPTIONS, PUT)
+     * @param string $uri
+     * @return array{
+     *     handler: string,
+     *     middlewares: string[],
+     *     attributes: array<string, mixed>
+     * }
+     */
+    public function dispatch(string $httpMethod, string $uri): array
+    {
+        $routeInfo = $this->buildDispatcher()->dispatch($httpMethod, $uri);
+
+        switch ($routeInfo[0]) {
+            case \FastRoute\Dispatcher::NOT_FOUND:
+                return [
+                    'handler' => $this->handler_404,
+                    'middlewares' => $this->middlewares_404,
+                    'attributes' => [],
+                ];
+            case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+                return [
+                    'handler' => $this->handler_405,
+                    'middlewares' => $this->middlewares_405,
+                    'attributes' => ['allowed' => $routeInfo[1]],
+                ];
+            case \FastRoute\Dispatcher::FOUND:
+                /** @var array{
+                 *      handler: string,
+                 *      middlewares: array<string>
+                 *     } $route
+                 */
+                $route = $routeInfo[1];
+                return [
                     'handler' => $route['handler'],
-                    'middlewares' => $route['middlewares']
-                ]);
-            }
-        }, '')->disableCache(); // cache not required, created on boot
-        return $fast_route->dispatcher();
+                    'middlewares' => $route['middlewares'],
+                    'attributes' => $routeInfo[2],
+                ];
+        }
+        throw new \RuntimeException('dispatch fail');
     }
 
     private function route(string $method, string $pattern, string $handler, array $middlewares): self
