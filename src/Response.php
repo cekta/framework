@@ -9,14 +9,14 @@ use Psr\Http\Message\ResponseInterface;
 class Response
 {
     /**
-     * @param $body
+     * @param mixed $body @see https://www.php.net/manual/en/function.json-encode.php any default type except resource
      * @param int $http_code @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
      * @param array $headers
      * @param int $encode_flags @see https://www.php.net/manual/en/function.json-encode.php $flags
      * @return ResponseInterface
      */
     public static function json(
-        $body,
+        mixed $body,
         int $http_code = 200,
         array $headers = [],
         int $encode_flags = 0,
