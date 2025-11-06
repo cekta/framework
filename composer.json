@@ -9,6 +9,9 @@
       "email": "smpl@itmywork.com"
     }
   ],
+  "bin": [
+    "./bin/cekta"
+  ],
   "require": {
     "cekta/di": "@stable",
     "psr/http-server-handler": "@stable",
@@ -16,8 +19,8 @@
     "spiral/roadrunner-http": "@stable",
     "nyholm/psr7": "@stable",
     "cekta/routing": "dev-master",
-    "nikic/fast-route": "dev-master"
-    
+    "nikic/fast-route": "dev-master",
+    "symfony/console": "^7.3"
   },
   "autoload": {
     "psr-4": {

@@ -20,11 +20,11 @@ class HTTP
         $factory = new Psr17Factory();
         $worker = new PSR7Worker(Worker::create(), $factory, $factory, $factory);
         $configuration = Application::buildConfiguration($provider);
-        $this->compileContainer($configuration);
+        $configuration->compile();
 
         while ($request = $worker->waitRequest()) {
             /** @var ContainerInterface $container */
-            $container = new ($configuration->container_fqcn)($configuration->params);
+            $container = $configuration->createContainer();
             try {
                 /** @var RequestHandlerInterface $app */
                 $app = $container->get(RequestHandlerInterface::class);
@@ -33,22 +33,5 @@ class HTTP
                 $worker->getWorker()->error((string)$e);
             }
         }
-    }
-
-    private function compileContainer(Configuration $configuration): void
-    {
-        file_put_contents(
-            $configuration->container_filename,
-            new \Cekta\DI\Compiler(
-                containers: $configuration->containers,
-                params: $configuration->params,
-                alias: $configuration->alias,
-                fqcn: $configuration->container_fqcn,
-            )->compile()
-        );
-
-        chmod($configuration->container_filename, 0777);
-
-        echo "$configuration->container_filename was compiled" . PHP_EOL;
     }
 }
