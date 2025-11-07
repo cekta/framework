@@ -3,7 +3,7 @@
 
 use Cekta\Framework\Application;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 $fqcn = $_ENV['CEKTA_DEFAULT_SERVICE_PROVIDER'] ?: '\App\AppServiceProvider';
 $configuration = Application::buildConfiguration(new $fqcn());
