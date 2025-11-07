@@ -20,7 +20,7 @@
     "nyholm/psr7": "@stable",
     "cekta/routing": "dev-master",
     "nikic/fast-route": "dev-master",
-    "symfony/console": "^7.3"
+    "symfony/console": "@stable"
   },
   "autoload": {
     "psr-4": {
