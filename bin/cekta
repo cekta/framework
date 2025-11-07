@@ -5,8 +5,9 @@ use Cekta\Framework\Application;
 
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
-$fqcn = $_ENV['CEKTA_DEFAULT_SERVICE_PROVIDER'] ?: '\App\AppServiceProvider';
+$fqcn = $_ENV['CEKTA_DEFAULT_SERVICE_PROVIDER'] ?? '\App\AppServiceProvider';
 $configuration = Application::buildConfiguration(new $fqcn());
+$configuration->compile();
 
 $configuration->createContainer()
     ->get(\Symfony\Component\Console\Application::class)
