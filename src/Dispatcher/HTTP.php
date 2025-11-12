@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Dispatcher;
 
-use Cekta\Framework\Application;
-use Cekta\Framework\Configuration;
-use Cekta\Framework\ServiceProvider;
+use Cekta\Framework\ContainerFactory;
+use Cekta\Framework\Dispatcher;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Spiral\RoadRunner\Worker;
 
-class HTTP
+class HTTP implements Dispatcher
 {
-    public function serve(ServiceProvider $provider): void
+    public function serve(ContainerFactory $container_factory): void
     {
         $factory = new Psr17Factory();
         $worker = new PSR7Worker(Worker::create(), $factory, $factory, $factory);
-        $configuration = Application::buildConfiguration($provider);
-        $configuration->compile();
 
         while ($request = $worker->waitRequest()) {
             /** @var ContainerInterface $container */
-            $container = $configuration->createContainer();
+            $container = $container_factory->createContainer();
             try {
                 /** @var RequestHandlerInterface $app */
                 $app = $container->get(RequestHandlerInterface::class);

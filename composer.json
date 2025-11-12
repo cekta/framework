@@ -9,9 +9,6 @@
       "email": "smpl@itmywork.com"
     }
   ],
-  "bin": [
-    "./bin/cekta"
-  ],
   "require": {
     "cekta/di": "@stable",
     "psr/http-server-handler": "@stable",
