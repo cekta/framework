@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Cekta\Framework;
 
 use Cekta\DI\Lazy;
-use Cekta\DI\Rule;
 
 interface ServiceProvider
 {
@@ -17,7 +16,6 @@ interface ServiceProvider
     /**
      * @return array{
      *     containers?: string[],
-     *     rules?: Rule[],
      *     alias?: array<string, string>
      * }
      */
