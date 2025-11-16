@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Dispatcher;
 
-use Cekta\Framework\ContainerFactory;
+use Cekta\Framework\Project;
 use Cekta\Framework\Dispatcher;
-use Cekta\Migrator\Command\Migrate;
 use Symfony\Component\Console\Application;
 
 class Cli implements Dispatcher
 {
-    public function serve(ContainerFactory $container_factory): void
+    public function serve(Project $project): void
     {
-        $container_factory->createContainer()
+        $project->createContainer()
             ->get(Application::class)
             ->run();
     }

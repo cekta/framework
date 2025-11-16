@@ -37,10 +37,14 @@ class ServiceProviderChain implements ServiceProvider
         $result = [
             'containers' => [],
             'alias' => [],
+            'factories' => [],
+            'singletons' => [],
         ];
         foreach ($this->providers as $provider) {
             $r = $provider->register();
-            $result['containers'] = array_merge($result['containers'], $r['containers']);
+            $result['containers'] = array_merge($result['containers'], $r['containers'] ?? []);
+            $result['factories'] = array_merge($result['factories'], $r['factories'] ?? []);
+            $result['singletons'] = array_merge($result['singletons'], $r['singletons'] ?? []);
             $result['alias'] += $r['alias'];
         }
         return $result;

@@ -6,7 +6,8 @@ namespace Cekta\Framework;
 
 use Psr\Container\ContainerInterface;
 
-interface ContainerFactory
+interface Project
 {
     public function createContainer(): ContainerInterface;
+    public function compile(): void;
 }

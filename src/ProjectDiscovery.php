@@ -70,6 +70,7 @@ class ProjectDiscovery
     }
 
     /**
+     * must be serializable (var_export) to save state
      * @return array{
      *     containers: string[],
      *     tags: array<string, string[]>

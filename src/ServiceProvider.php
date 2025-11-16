@@ -16,7 +16,9 @@ interface ServiceProvider
     /**
      * @return array{
      *     containers?: string[],
-     *     alias?: array<string, string>
+     *     alias?: array<string, string>,
+     *     factories?: string[],
+     *     singletons?: string[]
      * }
      */
     public function register(): array;

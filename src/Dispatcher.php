@@ -6,5 +6,5 @@ namespace Cekta\Framework;
 
 interface Dispatcher
 {
-    public function serve(ContainerFactory $container_factory): void;
+    public function serve(Project $project): void;
 }
