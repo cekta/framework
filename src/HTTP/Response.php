@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cekta\Framework;
+namespace Cekta\Framework\HTTP;
 
 use Psr\Http\Message\ResponseInterface;
 

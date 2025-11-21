@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Cekta\Framework;
+namespace Cekta\Framework\HTTP;
 
 use Cekta\Routing\MatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class HttpApplication implements RequestHandlerInterface
+class Application implements RequestHandlerInterface
 {
     /**
      * @var MatcherInterface
