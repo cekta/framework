@@ -43,7 +43,7 @@ class ProjectDiscovery
      * @param string[] $items
      */
     public function __construct(
-        private array $items,
+        private readonly iterable $items,
     ) {
     }
 
@@ -115,7 +115,7 @@ class ProjectDiscovery
             }
             $this->checkImplement($class);
             $this->checkExtend($class);
-            $this->chectTags($class);
+            $this->checkTags($class);
         }
     }
     
@@ -138,7 +138,7 @@ class ProjectDiscovery
         }
     }
 
-    private function chectTags(ReflectionClass $class): void
+    private function checkTags(ReflectionClass $class): void
     {
         $interface_names = $class->getInterfaceNames();
         foreach ($this->tag_implements as $tag => $record) {

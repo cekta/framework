@@ -15,8 +15,7 @@
     "psr/http-server-middleware": "@stable",
     "spiral/roadrunner-http": "@stable",
     "nyholm/psr7": "@stable",
-    "cekta/routing": "dev-master",
-    "nikic/fast-route": "dev-master",
+    "cekta/routing-nikic": "dev-master",
     "symfony/console": "@stable"
   },
   "autoload": {
