@@ -13,7 +13,5 @@ class Build implements Dispatcher
     {
         $project->clean();
         $project->container();
-        
-        echo "Generated optimized Container and discover files" . PHP_EOL;
     }
 }

@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "cekta/di": "@stable",
+    "cekta/di": "dev-master",
     "psr/http-server-handler": "@stable",
     "psr/http-server-middleware": "@stable",
     "spiral/roadrunner-http": "@stable",
