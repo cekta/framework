@@ -9,6 +9,10 @@ use Symfony\Component\Console\Command\Command;
 
 class ContainerCommandLoader extends \Symfony\Component\Console\CommandLoader\ContainerCommandLoader
 {
+    /**
+     * @param ContainerInterface $container
+     * @param array<string,string> $commandMap command_name => command::class
+     */
     public function __construct(ContainerInterface $container, array $commandMap)
     {
         parent::__construct($container, $commandMap);

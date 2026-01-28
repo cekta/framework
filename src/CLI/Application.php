@@ -8,7 +8,7 @@ class Application extends \Symfony\Component\Console\Application
 {
     public function __construct(ContainerCommandLoader $container_command_loader)
     {
-        parent::__construct();;
+        parent::__construct();
         $this->setCommandLoader($container_command_loader);
     }
 }

@@ -11,7 +11,7 @@ class Response
     /**
      * @param mixed $body @see https://www.php.net/manual/en/function.json-encode.php any default type except resource
      * @param int $http_code @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
-     * @param array $headers
+     * @param array<string, string> $headers
      * @param int $encode_flags @see https://www.php.net/manual/en/function.json-encode.php $flags
      * @return ResponseInterface
      */
@@ -21,10 +21,15 @@ class Response
         array $headers = [],
         int $encode_flags = 0,
     ): ResponseInterface {
+        if (is_resource($body)) {
+            throw new \InvalidArgumentException("body cant be resource");
+        }
+        $body = json_encode($body, $encode_flags);
+        assert($body !== false);
         return new \Nyholm\Psr7\Response(
             status: $http_code,
             headers: $headers + ['Content-Type' => 'application/json'],
-            body: json_encode($body, $encode_flags)
+            body: $body
         );
     }
 

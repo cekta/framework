@@ -13,8 +13,17 @@ use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionAttribute;
 use ReflectionClass;
 
+/**
+ * @phpstan-type state array{
+ *       entries?: array<string>,
+ *       routes?: array<array{method: string, pattern: string, handler: string, middlewares: array<string>}>
+ *   }
+ */
 class Module implements \Cekta\DI\Module
 {
+    /**
+     * @var state
+     */
     private array $state = [];
 
     /**
@@ -25,13 +34,19 @@ class Module implements \Cekta\DI\Module
         return [
             Router::class => new Lazy\Closure(function () use ($encoded_module) {
                 $router = new Router(NotFound::class, NotAllowed::class);
+                /** @var state $state */
                 $state = json_decode($encoded_module, true);
                 $routes = $state['routes'] ?? [];
                 if (empty($routes)) {
                     throw new InvalidArgumentException('routes is empty');
                 }
-                foreach ($routes as ['method' => $method, 'pattern' => $pattern, 'handler' => $handler, 'middlewares' => $middlewares]) {
-                    $router->route($method, $pattern, $handler, $middlewares);
+                foreach ($routes as $route) {
+                    $router->route(
+                        $route['method'],
+                        $route['pattern'],
+                        $route['handler'],
+                        $route['middlewares']
+                    );
                 }
                 return $router;
             }),
@@ -43,11 +58,12 @@ class Module implements \Cekta\DI\Module
      */
     public function onBuild(string $encoded_module): array
     {
+        /** @var state $state */
         $state = json_decode($encoded_module, true);
         return [
             'entries' => [
                 RequestHandlerInterface::class,
-                ...($state[RequestHandlerInterface::class] ?? []),
+                ...($state['entries'] ?? []),
             ],
             'alias' => [
                 RequestHandlerInterface::class => Application::class,
@@ -72,7 +88,7 @@ class Module implements \Cekta\DI\Module
             foreach ($routes as $attr) {
                 /** @var Route $route */
                 $route = $attr->newInstance();
-                $this->state[RequestHandlerInterface::class][] = $class->name;
+                $this->state['entries'][] = $class->name;
                 $this->state['routes'][] = [
                     'method' => $route->method,
                     'pattern' => $route->pattern,
@@ -88,6 +104,10 @@ class Module implements \Cekta\DI\Module
      */
     public function getEncodedModule(): string
     {
-        return json_encode($this->state, JSON_PRETTY_PRINT);
+        $result = json_encode($this->state, JSON_PRETTY_PRINT);
+        if ($result === false) {
+            throw new InvalidArgumentException('state must be success encoded');
+        }
+        return $result;
     }
 }

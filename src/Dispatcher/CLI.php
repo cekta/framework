@@ -7,13 +7,22 @@ namespace Cekta\Framework\Dispatcher;
 use Cekta\DI\Project;
 use Cekta\Framework\CLI\Application;
 use Cekta\Framework\Dispatcher;
+use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class CLI implements Dispatcher
 {
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
+     */
     public function dispatch(Project $project): void
     {
-        $project->container()
-            ->get(Application::class)
-            ->run();
+        /** @var Application $app */
+        $app = $project->container()
+            ->get(Application::class);
+        $app->run();
     }
 }

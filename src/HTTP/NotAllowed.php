@@ -12,6 +12,9 @@ class NotAllowed implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return Response::json(['message' =>'405: method not allowed', 'allowed' => $request->getAttribute('allowed')], 405);
+        return Response::json(
+            ['message' => '405: method not allowed', 'allowed' => $request->getAttribute('allowed')],
+            405
+        );
     }
 }
