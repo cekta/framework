@@ -1,0 +1,27 @@
+name: cekta-di
+services:
+  app:
+    build:
+      context: ./
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.2}
+    user: ${UID:-1000}
+    volumes:
+      - ./:/app
+    environment:
+      - PHP_IDE_CONFIG=serverName=docker
+    command:
+      - test
+
+  pages:
+    image: peaceiris/mdbook:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: 
+      - serve
+      - -n
+      - 0.0.0.0
+

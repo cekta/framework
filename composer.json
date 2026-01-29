@@ -5,6 +5,11 @@
   "license": "GPL-3.0-only",
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "config": {
+    "allow-plugins": {
+      "infection/extension-installer": true
+    }
+  },
   "authors": [
     {
       "name": "Evgeniy Kuvshinov",
@@ -13,30 +18,41 @@
   ],
   "require": {
     "cekta/di": "dev-master",
+    "cekta/routing-fastroute": "@dev",
     "psr/http-server-handler": "@stable",
     "psr/http-server-middleware": "@stable",
     "spiral/roadrunner-http": "@stable",
     "nyholm/psr7": "@stable",
-    "cekta/routing-fastroute": "@dev",
     "symfony/console": "@stable",
-    "php": ">8.2"
+    "php": ">=8.2",
+    "ext-sockets": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "@stable",
+    "squizlabs/php_codesniffer": "@stable",
+    "phpstan/phpstan": "@stable",
+    "infection/infection": "@stable"
   },
   "scripts": {
     "test": [
+      "@composer install",
       "@phpcs",
-      "@phpstan"
+      "@phpstan",
+      "@phpunit"
     ],
     "phpcs": "./vendor/bin/phpcs",
-    "phpstan": "./vendor/bin/phpstan analyse --memory-limit=-1"
+    "phpstan": "./vendor/bin/phpstan analyse --memory-limit=-1",
+    "phpunit": "./vendor/bin/phpunit",
+    "infection": "./vendor/bin/infection --show-mutations"
   },
   "autoload": {
     "psr-4": {
       "Cekta\\Framework\\": "src/"
     }
   },
-  "require-dev": {
-    "phpunit/phpunit": "^12.5",
-    "squizlabs/php_codesniffer": "^4.0",
-    "phpstan/phpstan": "^2.1"
+  "autoload-dev": {
+    "psr-4": {
+      "Cekta\\Framework\\Test\\": "tests/"
+    }
   }
 }

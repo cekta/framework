@@ -1,0 +1,13 @@
+{
+  "source": {
+    "directories": [
+      "src"
+    ]
+  },
+  "mutators": {
+    "@default": true
+  },
+  "timeout": 10,
+  "minMsi": 100,
+  "minCoveredMsi": 100
+}
