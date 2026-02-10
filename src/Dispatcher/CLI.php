@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Dispatcher;
 
-use Cekta\DI\Project;
 use Cekta\Framework\CLI\Application;
 use Cekta\Framework\Dispatcher;
+use Cekta\Framework\Project;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

@@ -19,7 +19,7 @@ use ReflectionClass;
  *       routes?: array<array{method: string, pattern: string, handler: string, middlewares: array<string>}>
  *   }
  */
-class Module implements \Cekta\DI\Module
+class Module implements \Cekta\Framework\Contract\Module
 {
     /**
      * @var state

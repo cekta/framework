@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Dispatcher;
 
-use Cekta\DI\Project;
 use Cekta\Framework\Dispatcher;
+use Cekta\Framework\Project;
 
 class Build implements Dispatcher
 {

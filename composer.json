@@ -10,12 +10,6 @@
       "infection/extension-installer": true
     }
   },
-  "authors": [
-    {
-      "name": "Evgeniy Kuvshinov",
-      "email": "smpl@itmywork.com"
-    }
-  ],
   "require": {
     "php": ">=8.2",
     "ext-sockets": "*",
@@ -55,5 +49,11 @@
     "psr-4": {
       "Cekta\\Framework\\Test\\": "tests/"
     }
-  }
+  },
+  "authors": [
+    {
+      "name": "Evgeniy Kuvshinov",
+      "email": "smpl@itmywork.com"
+    }
+  ]
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Dispatcher;
 
-use Cekta\DI\Project;
 use Cekta\Framework\Dispatcher;
+use Cekta\Framework\Project;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Server\RequestHandlerInterface;
 use Spiral\RoadRunner\Http\PSR7Worker;
