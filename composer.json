@@ -17,6 +17,8 @@
     }
   ],
   "require": {
+    "php": ">=8.2",
+    "ext-sockets": "*",
     "cekta/di": "dev-master",
     "cekta/routing-fastroute": "@dev",
     "psr/http-server-handler": "@stable",
@@ -24,8 +26,7 @@
     "spiral/roadrunner-http": "@stable",
     "nyholm/psr7": "@stable",
     "symfony/console": "@stable",
-    "php": ">=8.2",
-    "ext-sockets": "*"
+    "cekta/framework-contract": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "@stable",
