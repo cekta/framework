@@ -18,9 +18,24 @@ readonly class Effect
         return file_put_contents($filename, $data);
     }
 
-    public function readPHPFile(string $filename): mixed
+    /**
+     * @param mixed $value
+     * @param int $flags
+     * @param int<1, max> $depth
+     * @return string|false
+     */
+    public function encode(mixed $value,int $flags = 0, int $depth = 512): string|false
     {
-        return require $filename;
+        return json_encode($value, $flags, $depth);
+    }
+
+    public function readJsonFile(string $filename): mixed
+    {
+        $data = file_get_contents($filename);
+        if ($data === false) {
+            throw new \RuntimeException("$filename must be readable");
+        }
+        return json_decode($data, true);
     }
 
     public function createContainer(string $class, mixed ...$args): mixed

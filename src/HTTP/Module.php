@@ -29,14 +29,13 @@ class Module implements \Cekta\Framework\Contract\Module
     /**
      * @inheritDoc
      */
-    public function onCreate(string $encoded_module): array
+    public function onCreateParameters(mixed $cachedData): array
     {
         return [
-            Router::class => new Lazy\Closure(function () use ($encoded_module) {
+            Router::class => new Lazy\Closure(function () use ($cachedData) {
                 $router = new Router(NotFound::class, NotAllowed::class);
-                /** @var state $state */
-                $state = json_decode($encoded_module, true);
-                $routes = $state['routes'] ?? [];
+                /** @var state $cachedData */
+                $routes = $cachedData['routes'] ?? [];
                 if (empty($routes)) {
                     throw new InvalidArgumentException('routes is empty');
                 }
@@ -56,14 +55,13 @@ class Module implements \Cekta\Framework\Contract\Module
     /**
      * @inheritDoc
      */
-    public function onBuild(string $encoded_module): array
+    public function onBuildDefinitions(mixed $cachedData): array
     {
-        /** @var state $state */
-        $state = json_decode($encoded_module, true);
+        /** @var state $cachedData */
         return [
             'entries' => [
                 RequestHandlerInterface::class,
-                ...($state['entries'] ?? []),
+                ...($cachedData['entries'] ?? []),
             ],
             'alias' => [
                 RequestHandlerInterface::class => Application::class,
@@ -101,13 +99,10 @@ class Module implements \Cekta\Framework\Contract\Module
 
     /**
      * @inheritDoc
+     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
      */
-    public function getEncodedModule(): string
+    public function getCacheableData(): mixed
     {
-        $result = json_encode($this->state, JSON_PRETTY_PRINT);
-        if ($result === false) {
-            throw new InvalidArgumentException('state must be success encoded');
-        }
-        return $result;
+        return $this->state;
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\CLI;
 
-use InvalidArgumentException;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -30,26 +29,24 @@ class Module implements \Cekta\Framework\Contract\Module
     /**
      * @inheritDoc
      */
-    public function onCreate(string $encoded_module): array
+    public function onCreateParameters(mixed $cachedData): array
     {
-        /** @var state $state */
-        $state = json_decode($encoded_module, true);
+        /** @var state $cachedData */
         return [
-            ContainerCommandLoader::class . '$commandMap' => [...($state['command_map'] ?? []), ...$this->command_map],
+            ContainerCommandLoader::class . '$commandMap' => [...($cachedData['command_map'] ?? []), ...$this->command_map],
         ];
     }
 
     /**
      * @inheritDoc
      */
-    public function onBuild(string $encoded_module): array
+    public function onBuildDefinitions(mixed $cachedData): array
     {
-        /** @var state $state */
-        $state = json_decode($encoded_module, true);
+        /** @var state $cachedData */
         return [
             'entries' => [
                 Application::class,
-                ...(array_values([...($state['command_map'] ?? []), ...$this->command_map])),
+                ...(array_values([...($cachedData['command_map'] ?? []), ...$this->command_map])),
             ],
         ];
     }
@@ -74,13 +71,10 @@ class Module implements \Cekta\Framework\Contract\Module
 
     /**
      * @inheritDoc
+     * @noinspection PhpMixedReturnTypeCanBeReducedInspection
      */
-    public function getEncodedModule(): string
+    public function getCacheableData(): mixed
     {
-        $result = json_encode($this->state, JSON_PRETTY_PRINT);
-        if ($result === false) {
-            throw new InvalidArgumentException('state must be success encoded');
-        }
-        return $result;
+        return $this->state;
     }
 }

@@ -12,16 +12,16 @@ class ExampleModule implements Module
     public function __construct(
         private array $create,
         private array $build,
-        private string $encoded_module = ''
+        private array $cachedData = []
     ) {
     }
 
-    public function onCreate(string $encoded_module): array
+    public function onCreateParameters(mixed $cachedData): array
     {
         return $this->create;
     }
 
-    public function onBuild(string $encoded_module): array
+    public function onBuildDefinitions(mixed $cachedData): array
     {
         return $this->build;
     }
@@ -30,8 +30,8 @@ class ExampleModule implements Module
     {
     }
 
-    public function getEncodedModule(): string
+    public function getCacheableData(): mixed
     {
-        return $this->encoded_module;
+        return $this->cachedData;
     }
 }

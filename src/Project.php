@@ -11,6 +11,7 @@ use Closure;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
+use RuntimeException;
 
 /**
  * @external
@@ -70,20 +71,24 @@ class Project
         if (
             !$this->effect->fileExists($this->discover_filename)
             || (
-                !is_array($data = require $this->discover_filename)
+                !is_array($data = $this->effect->readJsonFile($this->discover_filename))
                 || !array_key_exists('modules', $data)
                 || !is_array($data['modules'])
                 || !empty(array_diff_key($data['modules'], $this->modules))
             )
         ) {
+            $data = $this->effect->encode(['modules' => $this->buildDiscover()], JSON_PRETTY_PRINT);
+            if ($data === false) {
+                throw new RuntimeException("Cant encode modules data to json");
+            }
             $this->effect->write(
                 $this->discover_filename,
-                '<?php return ' . var_export(['modules' => $this->buildDiscover()], true) . ';'
+                $data
             );
+
+            $data = $this->effect->readJsonFile($this->discover_filename);
         }
-
-
-        $data = $this->effect->readPHPFile($this->discover_filename);
+        
         if (
             !is_array($data)
             || !array_key_exists('modules', $data)
@@ -116,8 +121,8 @@ class Project
         ];
         foreach ($this->modules as $key => $module) {
             $encoded_module = $this->cached_modules[$key];
-            $r = $module->onBuild($encoded_module);
-            $r['params'] = $module->onCreate($encoded_module);
+            $r = $module->onBuildDefinitions($encoded_module);
+            $r['params'] = $module->onCreateParameters($encoded_module);
             foreach (['params', 'alias'] as $key) {
                 $record = $r[$key] ?? [];
                 $params[$key] = [...$params[$key], ...$record];
@@ -143,7 +148,7 @@ class Project
     {
         $params = [];
         foreach ($this->modules as $key => $module) {
-            $record = $module->onCreate($this->cached_modules[$key] ?? '');
+            $record = $module->onCreateParameters($this->cached_modules[$key] ?? '');
             $intersect = array_intersect_key($params, $record);
             if (!empty($intersect)) {
                 throw new IntersectConfiguration($intersect, 'params');
@@ -156,7 +161,8 @@ class Project
     }
 
     /**
-     * @return array<string>
+     * @return array<mixed>
+     * @noinspection PhpPluralMixedCanBeReplacedWithArrayInspection
      */
     private function buildDiscover(): array
     {
@@ -168,7 +174,12 @@ class Project
         }
         $result = [];
         foreach ($this->modules as $module) {
-            $result[] = $module->getEncodedModule();
+            $data = $module->getCacheableData();
+            if ($data === false) {
+                $class = $module::class;
+                throw new RuntimeException("data is not json_encodable for module: $class");
+            }
+            $result[] = $data;
         }
         return $result;
     }
