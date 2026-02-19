@@ -88,7 +88,7 @@ class Project
 
             $data = $this->effect->readJsonFile($this->discover_filename);
         }
-        
+
         if (
             !is_array($data)
             || !array_key_exists('modules', $data)

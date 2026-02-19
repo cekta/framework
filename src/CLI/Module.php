@@ -33,7 +33,10 @@ class Module implements \Cekta\Framework\Contract\Module
     {
         /** @var state $cachedData */
         return [
-            ContainerCommandLoader::class . '$commandMap' => [...($cachedData['command_map'] ?? []), ...$this->command_map],
+            ContainerCommandLoader::class . '$commandMap' => [
+                ...($cachedData['command_map'] ?? []),
+                ...$this->command_map
+            ],
         ];
     }
 
