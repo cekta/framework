@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Cekta\Framework\HTTP;
 
 use Cekta\DI\Lazy;
+use Cekta\Framework\HTTP\Handler\NotAllowed;
+use Cekta\Framework\HTTP\Handler\NotFound;
 use Cekta\Routing\MatcherInterface;
 use Cekta\Routing\Nikic\Matcher;
 use Cekta\Routing\Nikic\Router;
@@ -27,13 +29,32 @@ class Module implements \Cekta\Framework\Contract\Module
     private array $state = [];
 
     /**
+     * @param class-string $handler_404 class handler for 404 page
+     * @param class-string $handler_405 class handler for 405 page
+     * @param array<class-string> $middlewares_404 names of middlewares for 404 page
+     * @param array<class-string> $middlewares_405 names of middlewares for 405 page
+     */
+    public function __construct(
+        private readonly string $handler_404 = NotFound::class,
+        private readonly string $handler_405 = NotAllowed::class,
+        private readonly array $middlewares_404 = [],
+        private readonly array $middlewares_405 = [],
+    ) {
+    }
+
+    /**
      * @inheritDoc
      */
     public function onCreateParameters(mixed $cachedData): array
     {
         return [
             Router::class => new Lazy\Closure(function () use ($cachedData) {
-                $router = new Router(NotFound::class, NotAllowed::class);
+                $router = new Router(
+                    $this->handler_404, 
+                    $this->handler_405,
+                    $this->middlewares_404,
+                    $this->middlewares_405,
+                );
                 /** @var state $cachedData */
                 $routes = $cachedData['routes'] ?? [];
                 if (empty($routes)) {

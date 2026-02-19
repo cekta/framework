@@ -7,7 +7,7 @@ namespace Cekta\Framework\HTTP\Route;
 use Cekta\Framework\HTTP\Route;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-readonly class PUT extends Route
+final readonly class PUT extends Route
 {
     /**
      * @inheritDoc

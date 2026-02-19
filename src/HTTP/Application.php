@@ -9,15 +9,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class Application implements RequestHandlerInterface
+final readonly class Application implements RequestHandlerInterface
 {
-    /**
-     * @var MatcherInterface
-     */
-    private $matcher;
-    public function __construct(MatcherInterface $matcher)
+    public function __construct(private MatcherInterface $matcher)
     {
-        $this->matcher = $matcher;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

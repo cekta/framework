@@ -2,42 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Cekta\Framework\HTTP;
+namespace Cekta\Framework\HTTP\Response;
 
+use InvalidArgumentException;
+use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class Response
+final readonly class JSONFactory
 {
     /**
-     * @param mixed $body @see https://www.php.net/manual/en/function.json-encode.php any default type except resource
+     * @param mixed $body must json_encode-able @see https://www.php.net/manual/en/function.json-encode.php $value
      * @param int $http_code @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
-     * @param array<string, string> $headers
+     * @param array<string, string> $headers header=>value transform to header:value
      * @param int $encode_flags @see https://www.php.net/manual/en/function.json-encode.php $flags
      * @return ResponseInterface
      */
-    public static function json(
+    public function create(
         mixed $body,
         int $http_code = 200,
         array $headers = [],
         int $encode_flags = 0,
     ): ResponseInterface {
         if (is_resource($body)) {
-            throw new \InvalidArgumentException("body cant be resource");
+            throw new InvalidArgumentException("body cant be resource");
         }
         $body = json_encode($body, $encode_flags);
         assert($body !== false);
-        return new \Nyholm\Psr7\Response(
+        return new Response(
             status: $http_code,
             headers: $headers + ['Content-Type' => 'application/json'],
             body: $body
-        );
-    }
-
-    public static function redirect(string $url, int $http_code = 301): ResponseInterface
-    {
-        return new \Nyholm\Psr7\Response(
-            status: $http_code,
-            headers: ['Location' => $url],
         );
     }
 }

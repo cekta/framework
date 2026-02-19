@@ -7,7 +7,7 @@ namespace Cekta\Framework\HTTP\Route;
 use Cekta\Framework\HTTP\Route;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-readonly class GET extends Route
+final readonly class GET extends Route
 {
     public function __construct(string $pattern, array $middlewares = [])
     {

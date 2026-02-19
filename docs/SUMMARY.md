@@ -1,7 +1,11 @@
 # Документация
 
 - [FRAMEWORK](./readme.md)
-- [Skeleton]()
-- [HTTP](http.md)
-- [Schedule (Планировщик)]()
-- [Background JOB (фоновые задачи)]()
+- [Skeleton](skeleton.md)
+# HTTP
+- [Создание своего HTTP обработчика.](http/handler.md)
+- [Управление страницей 404 NOT FOUND](http/404.md)
+- [Управление страницей 405 NOT ALLOWED]()
+- [middlewares]()
+# CLI
+- [!!!ПРЕДУПРЕЖДЕНИЕ!!!]()

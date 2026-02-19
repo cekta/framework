@@ -9,17 +9,17 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class Pipeline implements RequestHandlerInterface
+final class Pipeline implements RequestHandlerInterface
 {
-    private RequestHandlerInterface $handler;
     /**
      * @var array<MiddlewareInterface>
      */
     private array $middlewareInterfaces;
 
-    public function __construct(RequestHandlerInterface $handler, MiddlewareInterface ...$middlewareInterfaces)
-    {
-        $this->handler = $handler;
+    public function __construct(
+        private readonly RequestHandlerInterface $handler,
+        MiddlewareInterface ...$middlewareInterfaces
+    ) {
         $this->middlewareInterfaces = $middlewareInterfaces;
     }
 
