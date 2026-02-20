@@ -82,6 +82,10 @@ class Module implements \Cekta\Framework\Contract\Module
         return [
             'entries' => [
                 RequestHandlerInterface::class,
+                $this->handler_404,
+                ...$this->middlewares_404,
+                $this->handler_405,
+                ...$this->middlewares_405,
                 ...($cachedData['entries'] ?? []),
             ],
             'alias' => [
