@@ -81,8 +81,8 @@ final readonly class Example implements RequestHandlerInterface
 make restart
 ```
 
-Открываем [http://localhost:8080/api/v1/items/345](http://localhost:8080/api/v1/items/345).
+Открываем [http://localhost:8080/api/v1/items/345](http://localhost:8080/api/v1/items/345)
 
 Смотрим результат и видим номер 345 отправленный нами, 
-причем в качестве id могут быть только цифры (соответствие regexp),  
+причем в качестве id могут быть только цифры (должно соответствовать regexp указанными при регистрации), 
 например [http://localhost:8080/api/v1/items/abc](http://localhost:8080/api/v1/items/abc) вернет 404.
