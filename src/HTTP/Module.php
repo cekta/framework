@@ -29,12 +29,14 @@ class Module implements \Cekta\Framework\Contract\Module
     private array $state = [];
 
     /**
+     * @param array<class-string> $middlewares names of middlewares for all application routes
      * @param class-string $handler_404 class handler for 404 page
      * @param class-string $handler_405 class handler for 405 page
      * @param array<class-string> $middlewares_404 names of middlewares for 404 page
      * @param array<class-string> $middlewares_405 names of middlewares for 405 page
      */
     public function __construct(
+        private readonly array $middlewares = [],
         private readonly string $handler_404 = NotFound::class,
         private readonly string $handler_405 = NotAllowed::class,
         private readonly array $middlewares_404 = [],
@@ -70,6 +72,7 @@ class Module implements \Cekta\Framework\Contract\Module
                 }
                 return $router;
             }),
+            RequestHandler::class . '$middlewares' => $this->middlewares,
         ];
     }
 
@@ -82,6 +85,7 @@ class Module implements \Cekta\Framework\Contract\Module
         return [
             'entries' => [
                 RequestHandlerInterface::class,
+                ...$this->middlewares,
                 $this->handler_404,
                 ...$this->middlewares_404,
                 $this->handler_405,
@@ -89,7 +93,7 @@ class Module implements \Cekta\Framework\Contract\Module
                 ...($cachedData['entries'] ?? []),
             ],
             'alias' => [
-                RequestHandlerInterface::class => Application::class,
+                RequestHandlerInterface::class => RequestHandler::class,
                 MatcherInterface::class => Matcher::class,
             ],
             'singletons' => [

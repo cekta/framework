@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Cekta\Framework;
 
+use RuntimeException;
+
 readonly class Application
 {
     /**
@@ -16,12 +18,9 @@ readonly class Application
     public function handle(string $mode, Project $project): int
     {
         if (!array_key_exists($mode, $this->dispatchers)) {
-            throw new \RuntimeException(
-                "$mode invalid dispatcher, available "
-                . implode(', ', array_keys($this->dispatchers))
-            );
+            $dispatchers = implode(', ', array_keys($this->dispatchers));
+            throw new RuntimeException("$mode invalid dispatcher, available $dispatchers");
         }
         return $this->dispatchers[$mode]->dispatch($project);
-        // handle all errors
     }
 }
