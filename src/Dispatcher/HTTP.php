@@ -14,7 +14,7 @@ use Throwable;
 
 class HTTP implements Dispatcher
 {
-    public function dispatch(Project $project): void
+    public function dispatch(Project $project): int
     {
         $factory = new Psr17Factory();
         $worker = new PSR7Worker(Worker::create(), $factory, $factory, $factory);
@@ -29,5 +29,7 @@ class HTTP implements Dispatcher
                 $worker->getWorker()->error((string)$e);
             }
         }
+        
+        return 0;
     }
 }

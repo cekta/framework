@@ -13,7 +13,7 @@ readonly class Application
     {
     }
 
-    public function handle(string $mode, Project $project): void
+    public function handle(string $mode, Project $project): int
     {
         if (!array_key_exists($mode, $this->dispatchers)) {
             throw new \RuntimeException(
@@ -21,7 +21,7 @@ readonly class Application
                 . implode(', ', array_keys($this->dispatchers))
             );
         }
-        $this->dispatchers[$mode]->dispatch($project);
+        return $this->dispatchers[$mode]->dispatch($project);
         // handle all errors
     }
 }

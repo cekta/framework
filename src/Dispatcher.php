@@ -6,5 +6,5 @@ namespace Cekta\Framework;
 
 interface Dispatcher
 {
-    public function dispatch(Project $project): void;
+    public function dispatch(Project $project): int;
 }

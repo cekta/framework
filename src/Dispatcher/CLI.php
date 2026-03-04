@@ -18,11 +18,11 @@ class CLI implements Dispatcher
      * @throws NotFoundExceptionInterface
      * @throws Exception
      */
-    public function dispatch(Project $project): void
+    public function dispatch(Project $project): int
     {
         /** @var Application $app */
         $app = $project->container()
             ->get(Application::class);
-        $app->run();
+        return $app->run();
     }
 }

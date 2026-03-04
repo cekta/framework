@@ -11,7 +11,7 @@ use Spiral\RoadRunner\Environment;
 
 class RR implements Dispatcher
 {
-    public function dispatch(Project $project): void
+    public function dispatch(Project $project): int
     {
         $dispatchers = [
             Environment\Mode::MODE_HTTP => new Dispatcher\HTTP(),
@@ -20,6 +20,6 @@ class RR implements Dispatcher
         if (!array_key_exists($mode, $dispatchers)) {
             throw new RuntimeException("$mode run_mode invalid");
         }
-        $dispatchers[$mode]->dispatch($project);
+        return $dispatchers[$mode]->dispatch($project);
     }
 }
