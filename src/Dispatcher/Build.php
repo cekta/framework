@@ -13,7 +13,6 @@ class Build implements Dispatcher
     {
         $project->clean();
         $project->container();
-        
         return 0;
     }
 }

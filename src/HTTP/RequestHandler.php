@@ -11,7 +11,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 readonly class RequestHandler implements RequestHandlerInterface
 {
-
     /**
      * @param Application $application
      * @param MiddlewareLocator $middleware_locator
@@ -30,7 +29,6 @@ readonly class RequestHandler implements RequestHandlerInterface
         foreach ($this->middlewares as $middleware) {
             $middlewares[] = $this->middleware_locator->get($middleware);
         }
-
         $pipeline = new Pipeline($this->application, ...$middlewares);
         return $pipeline->handle($request);
     }

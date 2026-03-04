@@ -18,7 +18,6 @@ class HTTP implements Dispatcher
     {
         $factory = new Psr17Factory();
         $worker = new PSR7Worker(Worker::create(), $factory, $factory, $factory);
-
         while ($request = $worker->waitRequest()) {
             $container = $project->container();
             try {
@@ -29,7 +28,6 @@ class HTTP implements Dispatcher
                 $worker->getWorker()->error((string)$e);
             }
         }
-        
         return 0;
     }
 }
