@@ -41,7 +41,9 @@ class Middleware404 implements MiddlewareInterface
 ```php
 // ...
 new \Cekta\Framework\HTTP\Module(
-    middlewares_404: \App\Example404::class,
+    middlewares_404: [
+        \App\Example404::class,
+    ]
 ),
 // ...
 ```
