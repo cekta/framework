@@ -3,3 +3,7 @@ authors = ["Evgeniy Kuvshinov"]
 language = "ru"
 src = "docs"
 title = "CEKTA/FRAMEWORK"
+
+[output.html]
+default-theme = "rust"
+preferred-dark-theme = "ayu"

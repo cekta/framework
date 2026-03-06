@@ -16,7 +16,14 @@
 - [Handler (Обработчик)](http/405/handler.md)
 - [Middleware](http/405/middleware.md)
 
+# Dependency Injection (DI)
+- [Универсальный алгоритм расширения функциональности](di.md)
+  - [Внедрение guzzlehttp/guzzle](di/guzzlehttp.md)
+  - [Внедрение psr/http-client](di/http-client.md)
+  - [Внедрение db (pgsql/mysql/sqlite)](di/db.md)
+  - [Внедерение миграций](di/db-migration.md)
+
 ---
 
-- [CLI: Создание команды](cli/command.md)
+- [CLI: Создание команды](command.md)
 - [Вступить  в секту](contact/cekta.md)

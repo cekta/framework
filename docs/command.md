@@ -60,7 +60,7 @@ hello world
 ## !!!Предупреждение!!!
 
 На текущий момент для работы с cli командами используется
-[symfony/console](https://packagist.org/packages/symfony/console) это практически стандарт де факто.
+[symfony/console](https://packagist.org/packages/symfony/console) это практически стандарт де-факто.
 
 Мне не нравится эта реализация по следующим причинам:
 
