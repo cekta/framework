@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Test\ProjectTest;
 
-use Cekta\Framework\Contract\Module;
+use Cekta\Module\Module;
 use ReflectionClass;
 
 class ExampleModule implements Module

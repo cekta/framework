@@ -18,10 +18,10 @@
 
 # Dependency Injection (DI)
 - [Универсальный алгоритм расширения функциональности](di.md)
-  - [Внедрение guzzlehttp/guzzle](di/guzzlehttp.md)
-  - [Внедрение psr/http-client](di/http-client.md)
-  - [Внедрение db (pgsql/mysql/sqlite)](di/db.md)
-  - [Внедерение миграций](di/db-migration.md)
+- [Внедрение guzzlehttp/guzzle](di/guzzlehttp.md)
+- [Внедрение psr/http-client](di/http-client.md)
+- [Внедрение db (pgsql/mysql/sqlite)](di/db.md)
+- [Внедерение миграций](di/db-migration.md)
 
 ---
 

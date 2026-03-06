@@ -11,7 +11,7 @@ use Symfony\Component\Console\Command\Command;
 /**
  * @phpstan-type state array{command_map?: array<string>}
  */
-class Module implements \Cekta\Framework\Contract\Module
+class Module implements \Cekta\Module\Module
 {
     /**
      * @var state

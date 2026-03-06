@@ -20,7 +20,7 @@
     "spiral/roadrunner-http": "@stable",
     "nyholm/psr7": "@stable",
     "symfony/console": "@stable",
-    "cekta/framework-contract": "dev-master"
+    "cekta/module": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "@stable",

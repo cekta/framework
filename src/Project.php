@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Cekta\Framework;
 
 use Cekta\DI\Exception\IntersectConfiguration;
-use Cekta\Framework\Contract\Module;
 use Cekta\Framework\Project\Effect;
+use Cekta\Module\Module;
 use Closure;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;

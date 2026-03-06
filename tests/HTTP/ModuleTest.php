@@ -12,6 +12,6 @@ class ModuleTest extends TestCase
 {
     public function test(): void
     {
-        Assert::assertInstanceOf(\Cekta\Framework\Contract\Module::class, new Module());
+        Assert::assertInstanceOf(\Cekta\Module\Module::class, new Module());
     }
 }
