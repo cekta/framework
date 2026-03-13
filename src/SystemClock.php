@@ -12,13 +12,11 @@ use Psr\Clock\ClockInterface;
 
 class SystemClock implements ClockInterface
 {
-    public function __construct(private DateTimeZone $timezone)
+    public function __construct(private ?DateTimeZone $timezone = null)
     {
-    }
-
-    public static function fromUTC(): self
-    {
-        return new self(new DateTimeZone('UTC'));
+        if ($this->timezone === null) {
+           $this->timezone = new DateTimeZone('UTC');
+        }
     }
 
     /**
