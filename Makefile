@@ -7,7 +7,7 @@ docs:
 	docker compose up pages
 docs-build:
 	docker compose run --rm pages build
-run:
+test:
 	docker compose run --rm -it app
 test-8.2:
 	PHP_VERSION=8.2 docker compose build

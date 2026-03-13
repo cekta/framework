@@ -14,13 +14,15 @@
     "php": ">=8.2",
     "ext-sockets": "*",
     "cekta/di": "dev-master",
+    "cekta/module": "dev-master",
     "cekta/routing-fastroute": "@dev",
     "psr/http-server-handler": "@stable",
     "psr/http-server-middleware": "@stable",
     "spiral/roadrunner-http": "@stable",
     "nyholm/psr7": "@stable",
     "symfony/console": "@stable",
-    "cekta/module": "dev-master"
+    "psr/clock": "@stable",
+    "psr/log": "@stable"
   },
   "require-dev": {
     "phpunit/phpunit": "@stable",
