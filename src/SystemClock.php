@@ -15,7 +15,7 @@ class SystemClock implements ClockInterface
     public function __construct(private ?DateTimeZone $timezone = null)
     {
         if ($this->timezone === null) {
-           $this->timezone = new DateTimeZone('UTC');
+            $this->timezone = new DateTimeZone('UTC');
         }
     }
 
