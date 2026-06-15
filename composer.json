@@ -15,7 +15,8 @@
     "cekta/di": "dev-master",
     "cekta/module": "dev-master",
     "psr/clock": "@stable",
-    "psr/log": "@stable"
+    "psr/log": "@stable",
+    "ext-pcntl": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "@stable",
