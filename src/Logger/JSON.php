@@ -18,6 +18,6 @@ class JSON extends AbstractLogger
             'level' => $level,
             'message' => (string)$message,
             'context' => $context,
-        ]);
+        ]) . PHP_EOL;
     }
 }
