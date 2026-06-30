@@ -12,11 +12,13 @@
   },
   "require": {
     "php": ">=8.2",
+    "ext-pcntl": "*",
     "cekta/di": "dev-master",
     "cekta/module": "dev-master",
     "psr/clock": "@stable",
     "psr/log": "@stable",
-    "ext-pcntl": "*"
+    "cekta/migrator": "dev-master",
+    "cekta/queue-postgres": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "@stable",
