@@ -61,7 +61,10 @@ class ProjectDefault implements Project
 
         $this->readDiscover();
 
-        if (!$this->effect->fileExists($this->container_filename)) {
+        if (
+            $forceRecreate
+            || !$this->effect->fileExists($this->container_filename)
+        ) {
             $this->effect->write($this->container_filename, $this->buildContainer());
         }
 
