@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Queue;
 
+use Cekta\Framework\Queue\Attribute\TaskHandler;
 use Cekta\Queue\Handler;
 use Cekta\Queue\Postgres\Consumer;
-use Cekta\Queue\Postgres\Module\Attribute\TaskHandler;
 use Cekta\Queue\Producer;
 use ReflectionAttribute;
 use ReflectionClass;

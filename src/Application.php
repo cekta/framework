@@ -15,7 +15,7 @@ readonly class Application
     {
     }
 
-    public function handle(string $mode, Project $project): int
+    public function handle(string $mode, ProjectDefault $project): int
     {
         if (!array_key_exists($mode, $this->dispatchers)) {
             $dispatchers = implode(', ', array_keys($this->dispatchers));

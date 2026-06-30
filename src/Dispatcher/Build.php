@@ -11,8 +11,7 @@ class Build implements Dispatcher
 {
     public function dispatch(Project $project): int
     {
-        $project->clean();
-        $project->container();
+        $project->container(true);
         return 0;
     }
 }

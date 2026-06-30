@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Test;
 
-use Cekta\Framework\Project;
+use Cekta\Framework\ProjectDefault;
 use Cekta\Framework\Test\ProjectTest\ExampleModule;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-class ProjectTest extends TestCase
+class ProjectDefaultTest extends TestCase
 {
     public static function tearDownAfterClass(): void
     {
@@ -35,7 +35,7 @@ class ProjectTest extends TestCase
         $container_filename = __DIR__ . '/ProjectTest/' . ucfirst(__FUNCTION__) . 'Container.php';
         $container_fqcn = 'Cekta\Framework\Test\ProjectTest\\' . ucfirst(__FUNCTION__) . 'Container';
         $discover_filename = __DIR__ . '/ProjectTest/' . __FUNCTION__ . '.php';
-        $project = new Project(
+        $project = new ProjectDefault(
             [
                 new ExampleModule([], [])
             ],
