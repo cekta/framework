@@ -23,6 +23,8 @@ class Dispatcher implements \Cekta\Framework\Dispatcher
         $container = $project->container();
         /** @var LoggerInterface $logger */
         $logger = $container->get(LoggerInterface::class);
+        /** @var Consumer $consumer */
+        $consumer = $container->get(Consumer::class);
         $logger->info('worker started');
         pcntl_async_signals(true);
         $signalHandler = function (int $signal) use ($logger) {
@@ -47,8 +49,6 @@ class Dispatcher implements \Cekta\Framework\Dispatcher
         pcntl_signal(SIGINT, $signalHandler);
         while (!$this->shouldStop) {
             try {
-                /** @var Consumer $consumer */
-                $consumer = $container->get(Consumer::class);
                 $task = $consumer->consume();
                 if (null === $task) {
                     $logger->debug('nothing todo');

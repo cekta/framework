@@ -29,6 +29,8 @@ CREATE TABLE tasks (
     payload jsonb NOT NULL,
     created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
     started_at timestamptz,
+    started_hostname text,
+    started_pid integer,
     finished_at timestamptz,
     status job_status DEFAULT 'pending' NOT NULL
 )"
