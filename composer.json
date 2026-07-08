@@ -13,6 +13,7 @@
   "require": {
     "php": ">=8.2",
     "ext-pcntl": "*",
+    "ext-posix": "*",
     "cekta/di": "dev-master",
     "cekta/module": "dev-master",
     "psr/clock": "@stable",
