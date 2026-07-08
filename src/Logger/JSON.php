@@ -14,10 +14,13 @@ class JSON extends AbstractLogger
      */
     public function log($level, Stringable|string $message, array $context = []): void
     {
-        echo json_encode([
-            'level' => $level,
-            'message' => (string)$message,
-            'context' => $context,
-        ]) . PHP_EOL;
+        file_put_contents(
+            'php://stdout',
+            json_encode([
+                'level' => $level,
+                'message' => (string)$message,
+                'context' => $context,
+            ]) . PHP_EOL
+        );
     }
 }

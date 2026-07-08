@@ -26,8 +26,6 @@ class Dispatcher implements \Cekta\Framework\Dispatcher
         $container = $project->container();
         /** @var LoggerInterface $logger */
         $logger = $container->get(LoggerInterface::class);
-        /** @var Consumer $consumer */
-        $consumer = $container->get(Consumer::class);
         $logger->info('worker started');
         pcntl_async_signals(true);
         $signalHandler = function (int $signal) use ($logger) {
@@ -52,6 +50,8 @@ class Dispatcher implements \Cekta\Framework\Dispatcher
         pcntl_signal(SIGINT, $signalHandler);
         while (!$this->shouldStop) {
             try {
+                /** @var Consumer $consumer */
+                $consumer = $container->get(Consumer::class);
                 $task = $consumer->findNext();
                 if (null === $task) {
                     $logger->debug('nothing todo');
@@ -69,9 +69,10 @@ class Dispatcher implements \Cekta\Framework\Dispatcher
                     $this->forkWork($project, $task);
                 }
                 $this->waitForChild($pid, $task, $logger);
+                $container = $project->container();
             } catch (Throwable $e) {
                 $logger->emergency($e);
-                break;
+                exit(1);
             }
         }
         $logger->info('worker stopped');
@@ -81,6 +82,17 @@ class Dispatcher implements \Cekta\Framework\Dispatcher
     private function waitForChild(int $childPid, Task $task, LoggerInterface $logger): void
     {
         $startTime = time();
+        $context = [
+            'childPid' => $childPid,
+            'hostname' => gethostname(),
+            'task_uuid' => $task->getUuid(),
+        ];
+        $logger->debug(
+            __METHOD__ . ' started',
+            [
+                'startTime' => $startTime,
+            ] + $context
+        );
         while (true) {
             if (pcntl_waitpid($childPid, $status, WNOHANG) === $childPid) {
                 $logger->debug("child done", [
@@ -108,21 +120,17 @@ class Dispatcher implements \Cekta\Framework\Dispatcher
 
     public function forkWork(Project $project, Task $task): void
     {
-        try {
-            $container = $project->container();
-            /** @var LoggerInterface $logger */
-            $logger = $container->get(LoggerInterface::class);
-            /** @var TaskExecutor $taskExecutor */
-            $taskExecutor = $container->get(TaskExecutor::class);
-            $taskExecutor->execute($task);
-            $logger->info("task {uuid} was handled by {handler} status is {status}", [
-                'uuid' => $task->getUuid(),
-                'handler' => $task->getHandler(),
-                'status' => $task->getStatus(),
-            ]);
-        } catch (Throwable $e) {
-            exit(1);
-        }
+        $container = $project->container();
+        /** @var LoggerInterface $logger */
+        $logger = $container->get(LoggerInterface::class);
+        /** @var TaskExecutor $taskExecutor */
+        $taskExecutor = $container->get(TaskExecutor::class);
+        $taskExecutor->execute($task);
+        $logger->info("task {uuid} was handled by {handler} status is {status}", [
+            'uuid' => $task->getUuid(),
+            'handler' => $task->getHandler(),
+            'status' => $task->getStatus(),
+        ]);
         exit(0);
     }
 }
