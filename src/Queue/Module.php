@@ -7,6 +7,7 @@ namespace Cekta\Framework\Queue;
 use Cekta\Framework\Queue\Attribute\TaskHandler;
 use Cekta\Queue\Handler;
 use Cekta\Queue\Postgres\Consumer;
+use Cekta\Queue\Postgres\TaskExecutor;
 use Cekta\Queue\Producer;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -37,6 +38,7 @@ class Module implements \Cekta\Module\Module
         return [
             'entries' => [
                 Consumer::class,
+                TaskExecutor::class,
                 ...array_values($cachedData['handlers']),
             ],
             'alias' => [
