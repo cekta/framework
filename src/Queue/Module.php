@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Queue;
 
-use Cekta\Framework\Queue\Attribute\TaskHandler;
 use Cekta\Queue\Handler;
 use Cekta\Queue\Postgres\Consumer;
-use Cekta\Queue\Postgres\TaskExecutor;
 use Cekta\Queue\Producer;
-use ReflectionAttribute;
 use ReflectionClass;
 
 /**
@@ -38,7 +35,6 @@ class Module implements \Cekta\Module\Module
         return [
             'entries' => [
                 Consumer::class,
-                TaskExecutor::class,
                 ...array_values($cachedData['handlers']),
             ],
             'alias' => [
@@ -51,14 +47,8 @@ class Module implements \Cekta\Module\Module
     {
         if (
             $class->implementsInterface(Handler::class)
-            && $class->isInstantiable()
-            && !empty($attributes = $class->getAttributes(TaskHandler::class, ReflectionAttribute::IS_INSTANCEOF))
         ) {
-            foreach ($attributes as $attr) {
-                /** @var TaskHandler $taskHandler */
-                $taskHandler = $attr->newInstance();
-                $this->state['handlers'][$taskHandler->taskName] = $class->name;
-            }
+            $this->state['handlers'][$class->name::getHandledType()] = $class->name;
         }
     }
 
