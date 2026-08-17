@@ -1,11 +1,11 @@
 <?php
 
-namespace Cekta\Framework\Queue;
+namespace Cekta\Framework\Test\Fixture;
 
 use Cekta\Queue\Status;
 use PDO;
 
-class Migration implements \Cekta\Migrator\Migration
+class DbStructure
 {
     public function __construct(
         private PDO $pdo
@@ -15,7 +15,6 @@ class Migration implements \Cekta\Migrator\Migration
     public function up(): void
     {
         $pending = Status::PENDING->value;
-        //
         $this->pdo->exec(
             sprintf(
                 "CREATE TYPE job_status AS ENUM ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
@@ -56,10 +55,5 @@ CREATE TABLE tasks (
         $this->pdo->exec("DROP TABLE IF EXISTS tasks");
         $this->pdo->exec("DROP TABLE IF EXISTS queue_default");
         $this->pdo->exec("drop type if exists job_status");
-    }
-
-    public function priority(): int
-    {
-        return 1782079431;
     }
 }

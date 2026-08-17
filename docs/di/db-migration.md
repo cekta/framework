@@ -18,7 +18,7 @@
    **src/Application.php** добавим новый модуль в список.
    ```php
    // ..
-   new \Cekta\Framework\CLI\Module( // существующий модуль, добавим команды.
+   new \Cekta\Framework\CLI_TMP\Module( // существующий модуль, добавим команды.
      command_map: [
        'db:migrate' => \Cekta\Migrator\Command\Migrate::class,
        'db:rollback' => \Cekta\Migrator\Command\Rollback::class,

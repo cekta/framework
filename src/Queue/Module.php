@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Cekta\Framework\Queue;
 
+use Cekta\Framework\Queue\Attribute\Handles;
+use Cekta\Queue\Consumer;
 use Cekta\Queue\Handler;
-use Cekta\Queue\Postgres\Consumer;
 use Cekta\Queue\Producer;
 use ReflectionClass;
+use RuntimeException;
 
 /**
  * @phpstan-type state array{handlers: array<string, string>}
@@ -25,7 +27,7 @@ class Module implements \Cekta\Module\Module
     {
         /** @var state $cachedData */
         return [
-            \Cekta\Queue\Postgres\Producer::class . '$handlers' => $cachedData['handlers'],
+            \Cekta\Framework\Queue\Producer::class . '$handlers' => $cachedData['handlers'],
         ];
     }
 
@@ -38,17 +40,30 @@ class Module implements \Cekta\Module\Module
                 ...array_values($cachedData['handlers']),
             ],
             'alias' => [
-                Producer::class => \Cekta\Queue\Postgres\Producer::class,
+                Producer::class => \Cekta\Framework\Queue\Producer::class,
+                Consumer::class => \Cekta\Framework\Queue\Consumer::class,
             ],
         ];
     }
 
     public function discover(ReflectionClass $class): void
     {
-        if (
-            $class->implementsInterface(Handler::class)
-        ) {
-            $this->state['handlers'][$class->name::getHandledType()] = $class->name;
+        if (!$class->isInstantiable() || !$class->implementsInterface(Handler::class)) {
+            return;
+        }
+        $attributes = $class->getAttributes(Handles::class);
+        foreach ($attributes as $attribute) {
+            /** @var Handles $handles */
+            $handles = $attribute->newInstance();
+            if (isset($this->state['handlers'][$handles->message])) {
+                throw new RuntimeException(sprintf(
+                    'Duplicate handler for message "%s": %s and %s',
+                    $handles->message,
+                    $this->state['handlers'][$handles->message],
+                    $class->getName()
+                ));
+            }
+            $this->state['handlers'][$handles->message] = $class->getName();
         }
     }
 

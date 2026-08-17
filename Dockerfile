@@ -6,8 +6,8 @@ RUN set -ea; \
     install-php-extensions  \
         pcov \
         @composer  \
+        pdo_pgsql \
         xdebug  \
         pcntl \
         sockets
 WORKDIR /app
-ENTRYPOINT ["composer"]

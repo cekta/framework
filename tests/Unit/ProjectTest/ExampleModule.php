@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cekta\Framework\Test\ProjectTest;
+namespace Cekta\Framework\Test\Unit\ProjectTest;
 
 use Cekta\Module\Module;
 use ReflectionClass;

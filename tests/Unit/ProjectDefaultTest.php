@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Cekta\Framework\Test;
+namespace Cekta\Framework\Test\Unit;
 
 use Cekta\Framework\ProjectDefault;
-use Cekta\Framework\Test\ProjectTest\ExampleModule;
-use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\TestCase;
+use Cekta\Framework\Test\Unit\ProjectTest\ExampleModule;
 use ReflectionClass;
+use Testo\Assert;
+use Testo\Lifecycle\AfterClass;
 
-class ProjectDefaultTest extends TestCase
+class ProjectDefaultTest
 {
-    public static function tearDownAfterClass(): void
+    #[AfterClass]
+    public static function afterClass(): void
     {
         $reflection = new ReflectionClass(static::class);
 
@@ -33,7 +34,7 @@ class ProjectDefaultTest extends TestCase
     public function testFirstRunWithoutCache(): void
     {
         $container_filename = __DIR__ . '/ProjectTest/' . ucfirst(__FUNCTION__) . 'Container.php';
-        $container_fqcn = 'Cekta\Framework\Test\ProjectTest\\' . ucfirst(__FUNCTION__) . 'Container';
+        $container_fqcn = 'Cekta\Framework\Test\Unit\ProjectTest\\' . ucfirst(__FUNCTION__) . 'Container';
         $discover_filename = __DIR__ . '/ProjectTest/' . __FUNCTION__ . '.php';
         $project = new ProjectDefault(
             [
@@ -49,11 +50,11 @@ class ProjectDefaultTest extends TestCase
         $project->container(); // check creation params
         $container_mtime = filemtime($container_filename);
         $discover_mtime = filemtime($discover_filename);
-        Assert::assertNotFalse($container_mtime);
-        Assert::assertNotFalse($discover_mtime);
+        Assert::int($container_mtime);
+        Assert::int($discover_mtime);
 
         $project->container();
-        Assert::assertSame($container_mtime, filemtime($container_filename), 'container file must be reused');
-        Assert::assertSame($discover_mtime, filemtime($discover_filename), 'container file must be reused');
+        Assert::same($container_mtime, filemtime($container_filename), 'container file must be reused');
+        Assert::same($discover_mtime, filemtime($discover_filename), 'container file must be reused');
     }
 }

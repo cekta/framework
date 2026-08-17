@@ -11,32 +11,40 @@
     }
   },
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.3",
     "ext-pcntl": "*",
     "ext-posix": "*",
+    "ext-pdo": "*",
     "cekta/di": "dev-master",
     "cekta/module": "dev-master",
     "psr/clock": "@stable",
     "psr/log": "@stable",
     "cekta/migrator": "dev-master",
-    "cekta/queue-postgres": "dev-master"
+    "cekta/queue": "dev-master",
+    "symfony/console": "@stable",
+    "ramsey/uuid": "@stable",
+    "psr/container": "@stable"
   },
   "require-dev": {
-    "phpunit/phpunit": "@stable",
     "squizlabs/php_codesniffer": "@stable",
     "phpstan/phpstan": "@stable",
+    "testo/testo": "@stable",
+    "testo/bridge-infection": "@stable",
+    "mockery/mockery": "@stable",
+    "lcobucci/clock": "@stable",
     "infection/infection": "@stable"
   },
   "scripts": {
-    "test": [
+    "ci": [
       "@composer install",
       "@phpcs",
       "@phpstan",
-      "@phpunit"
+      "@testo"
     ],
     "phpcs": "./vendor/bin/phpcs",
     "phpstan": "./vendor/bin/phpstan analyse --memory-limit=-1",
     "phpunit": "./vendor/bin/phpunit",
+    "testo": "./vendor/bin/testo",
     "infection": "./vendor/bin/infection --show-mutations"
   },
   "autoload": {

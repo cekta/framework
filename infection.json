@@ -1,4 +1,5 @@
 {
+  "testFramework": "testo",
   "source": {
     "directories": [
       "src"
