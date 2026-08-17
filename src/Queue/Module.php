@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Cekta\Framework\Queue;
 
 use Cekta\Framework\Queue\Attribute\Handles;
-use Cekta\Queue\Consumer;
 use Cekta\Queue\Handler;
-use Cekta\Queue\Producer;
 use ReflectionClass;
 use RuntimeException;
 
@@ -27,7 +25,7 @@ class Module implements \Cekta\Module\Module
     {
         /** @var state $cachedData */
         return [
-            \Cekta\Framework\Queue\Producer::class . '$handlers' => $cachedData['handlers'],
+            HandlerProvider::class . '$handlers' => $cachedData['handlers'],
         ];
     }
 
@@ -40,8 +38,9 @@ class Module implements \Cekta\Module\Module
                 ...array_values($cachedData['handlers']),
             ],
             'alias' => [
-                Producer::class => \Cekta\Framework\Queue\Producer::class,
-                Consumer::class => \Cekta\Framework\Queue\Consumer::class,
+                \Cekta\Queue\Producer::class => Producer::class,
+                \Cekta\Queue\Consumer::class => Consumer::class,
+                \Cekta\Queue\StaleCleaner::class => StaleCleaner::class
             ],
         ];
     }

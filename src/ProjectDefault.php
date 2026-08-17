@@ -52,22 +52,17 @@ class ProjectDefault implements Project
 
     public function container(bool $forceRecreate = false): ContainerInterface
     {
-        if (
-            $forceRecreate
-            || !$this->effect->fileExists($this->discover_filename)
-        ) {
+        if ($forceRecreate) {
+            $this->effect->safeUnlink($this->container_filename);
+            $this->effect->safeUnlink($this->discover_filename);
+        }
+        if (!$this->effect->fileExists($this->discover_filename)) {
             $this->discover();
         }
-
         $this->readDiscover();
-
-        if (
-            $forceRecreate
-            || !$this->effect->fileExists($this->container_filename)
-        ) {
+        if (!$this->effect->fileExists($this->container_filename)) {
             $this->effect->write($this->container_filename, $this->buildContainer());
         }
-
         return $this->createContainer();
     }
 

@@ -70,4 +70,12 @@ readonly class Effect
         );
         return $builder->build();
     }
+
+    public function safeUnlink(string $filename): bool
+    {
+        if (file_exists($filename)) {
+            return unlink($filename);
+        }
+        return false;
+    }
 }
