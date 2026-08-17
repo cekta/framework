@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Cekta\Framework\Queue\Command;
 
 use Cekta\Queue\Consumer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,15 +16,20 @@ class Worker extends Command
 {
     private bool $shouldStop = false;
 
-    public function __construct(private Consumer $consumer)
-    {
+    public function __construct(
+        private Consumer $consumer,
+        private LoggerInterface $logger,
+        private int $usleepMicroseconds = 1000 * 300
+    ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logger->info("{command} started", ['command' => __CLASS__]);
         pcntl_async_signals(true);
         $signalHandler = function () {
+            $this->logger->info("{command} signal handler started", ['command' => __CLASS__]);
             $this->shouldStop = true;
         };
         pcntl_signal(SIGTERM, $signalHandler);
@@ -31,7 +37,9 @@ class Worker extends Command
 
         while (!$this->shouldStop) {
             $this->consumer->consume();
+            usleep($this->usleepMicroseconds);
         }
+        $this->logger->info("{command} graceful shutdown", ['command' => __CLASS__]);
         return 0;
     }
 }
