@@ -116,7 +116,7 @@ SQL;
             ]);
         $this->logger->info("task {uuid} was handled status is {status}", [
             'uuid' => $uuid,
-            'status' => Status::FAIL_STALE->value,
+            'status' => $status->value,
         ]);
     }
 
