@@ -5,7 +5,7 @@ namespace Cekta\Framework\Queue;
 use Cekta\Queue\Status;
 use PDO;
 
-class Migration implements \Cekta\Migrator\Migration
+class Migration implements \Cekta\Framework\Migrator\Migration
 {
     public function __construct(
         private PDO $pdo
