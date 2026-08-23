@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace <?= $namespace ?>;
 
 <?php } ?>
-use Cekta\Migrator\Migration;
+use Cekta\Framework\Migrator\Migration;
 
 class <?= $class ?> implements Migration
 {
