@@ -23,7 +23,7 @@ class DB implements Repository
 
     public function migrations(?int $limit = null): array
     {
-        $sql = "SELECT * FROM {$this->table_name} ORDER BY {$this->column_id}";
+        $sql = "SELECT * FROM {$this->table_name} ORDER BY {$this->column_id} desc";
         if ($limit !== null) {
             $sql .= " LIMIT {$limit}";
         }
