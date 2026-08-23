@@ -44,7 +44,7 @@ class Module implements \Cekta\Module\Module
                 ...($cachedData[Migration::class] ?? []),
             ],
             'alias' => [
-                Storage::class => $this->storage,
+                Repository::class => $this->storage,
             ],
         ];
     }

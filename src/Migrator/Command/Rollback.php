@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Cekta\Framework\Migrator\Command;
 
 use Cekta\Framework\Migrator\MigrationLocator;
-use Cekta\Framework\Migrator\Storage;
+use Cekta\Framework\Migrator\Repository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Rollback extends Command
 {
-    private Storage $storage;
+    private Repository $storage;
     private MigrationLocator $locator;
 
     public function __construct(
-        Storage $storage,
+        Repository $storage,
         MigrationLocator $locator,
         string $name = 'migration:rollback'
     ) {
@@ -31,7 +31,7 @@ class Rollback extends Command
             $output->writeln('migrator not installed');
             return Command::FAILURE;
         }
-        $names = $this->storage->getRollbackNames();
+        $names = $this->storage->migrations(1);
 
         if (empty($names)) {
             $output->writeln('nothing to rollback');
@@ -44,7 +44,7 @@ class Rollback extends Command
             $migration = $this->locator->get($fqcn);
             $class = get_class($migration);
             $output->writeln("{{$class} started");
-            $this->storage->rollback($id, $migration);
+            $this->storage->down($id, $migration);
             $output->writeln("{$class} finished");
         }
         $output->writeln('done');

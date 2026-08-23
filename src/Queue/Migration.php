@@ -58,8 +58,8 @@ CREATE TABLE tasks (
         $this->pdo->exec("drop type if exists job_status");
     }
 
-    public function priority(): int
+    public function require(): array
     {
-        return 1782079431;
+        return [];
     }
 }

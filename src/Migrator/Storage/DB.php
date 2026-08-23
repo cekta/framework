@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Cekta\Framework\Migrator\Storage;
 
 use Cekta\Framework\Migrator\Migration;
-use Cekta\Framework\Migrator\Storage;
+use Cekta\Framework\Migrator\Repository;
 use PDO;
 use PDOException;
 use RuntimeException;
 use Throwable;
 
-class DB implements Storage
+class DB implements Repository
 {
     public function __construct(
         private PDO $pdo,
@@ -22,9 +22,13 @@ class DB implements Storage
     ) {
     }
 
-    public function generateToExecute(array $migrations): array
+    public function migrations(?int $limit = null): array
     {
-        $sth = $this->pdo->query("SELECT * FROM {$this->table_name}");
+        $sql = "SELECT * FROM {$this->table_name} ORDER BY {$this->column_id}";
+        if ($limit !== null) {
+            $sql .= " LIMIT {$limit}";
+        }
+        $sth = $this->pdo->query($sql);
         if ($sth === false) {
             throw new PDOException(
                 "[{$this->pdo->errorInfo()[0]}][{$this->pdo->errorInfo()[1]}] {$this->pdo->errorInfo()[2]}"
@@ -34,18 +38,22 @@ class DB implements Storage
         $result = [];
         /** @var array<mixed> $row */
         foreach ($sth as $row) {
-            if (!array_key_exists($this->column_name, $row)) {
-                throw new RuntimeException("column_name = `{$this->column_name}` not found in row");
+            if (
+                !is_array($row)
+                || !array_key_exists($this->column_name, $row)
+                || !array_key_exists($this->column_id, $row)
+                || !is_string($row[$this->column_name])
+                || !class_exists($row[$this->column_name])
+                || !is_int($row[$this->column_id])
+            ) {
+                throw new RuntimeException("`{$this->column_name}` or `{$this->column_id}` not found in row");
             }
-            $result[] = $row[$this->column_name];
+            $result[$row[$this->column_id]] = $row[$this->column_name];
         }
-        /** @var array<string> $result */
-        $migrations = array_diff($migrations, $result);
-
-        return $migrations;
+        return $result;
     }
 
-    public function execute(Migration $migration): void
+    public function up(Migration $migration): void
     {
         $migration->up();
         $sql = "INSERT INTO {$this->table_name} 
@@ -97,37 +105,7 @@ class DB implements Storage
         $this->pdo->exec($sql);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getRollbackNames(int $step = 1): array
-    {
-        $sth = $this->pdo->query(
-            "select * from {$this->table_name} ORDER BY {$this->column_id} desc LIMIT {$step}"
-        );
-        if ($sth === false) {
-            throw new PDOException(
-                "[{$this->pdo->errorInfo()[0]}][{$this->pdo->errorInfo()[1]}] {$this->pdo->errorInfo()[2]}"
-            );
-        }
-        $result = [];
-        foreach ($sth as $row) {
-            if (
-                !is_array($row)
-                || !array_key_exists($this->column_name, $row)
-                || !array_key_exists($this->column_id, $row)
-                || !is_string($row[$this->column_name])
-                || !class_exists($row[$this->column_name])
-                || !is_int($row[$this->column_id])
-            ) {
-                throw new RuntimeException("`{$this->column_name}` or `{$this->column_id}` not found in row");
-            }
-            $result[$row[$this->column_id]] = $row[$this->column_name];
-        }
-        return $result;
-    }
-
-    public function rollback(int $id, Migration $migration): void
+    public function down(int $id, Migration $migration): void
     {
         $migration->down();
         $sth = $this->pdo->prepare("DELETE FROM {$this->table_name} WHERE {$this->column_id} = ?");

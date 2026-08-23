@@ -11,7 +11,7 @@ interface Migration
     public function down(): void;
 
     /**
-     * @return int unique ascending identifier, unix timestamp normal choice, date +%s
+     * @return array<class-string> Имена миграций которые должны быть выполнены ДО установки текущей миграции
      */
-    public function priority(): int;
+    public function require(): array;
 }

@@ -39,7 +39,6 @@ class MakeMigration extends Command
     {
         $namespace = $input->getOption('namespace');
         $class = $input->getArgument('class_name');
-        $id = time();
 
         ob_start();
         include __DIR__ . '/../../../template/migration.template.php';

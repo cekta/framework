@@ -2,7 +2,6 @@
 /**
  * @var string $class
  * @var string $namespace
- * @var string $id
  */
 ?>
 
@@ -31,8 +30,8 @@ class <?= $class ?> implements Migration
         // TODO: Implement down() method.
     }
 
-    public function priority(): int
+    public function require(): array
     {
-        return <?= $id ?>;
+        return [];
     }
 }
