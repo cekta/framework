@@ -82,17 +82,17 @@ class DB implements Repository
         $sql = match ($driver) {
             'mysql' => "CREATE TABLE IF NOT EXISTS {$this->table_name} (
                 {$this->column_id} BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                {$this->column_name}  VARCHAR(255) NOT NULL
+                {$this->column_name}  VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             )",
             'pgsql' => "CREATE TABLE IF NOT EXISTS {$this->table_name} (
                 {$this->column_id} BIGSERIAL PRIMARY KEY,
-                {$this->column_name}  VARCHAR(255) NOT NULL
+                {$this->column_name}  VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             )",
             'sqlite' => "CREATE TABLE IF NOT EXISTS {$this->table_name} (
                 {$this->column_id} INTEGER PRIMARY KEY AUTOINCREMENT,
-                {$this->column_name}  TEXT NOT NULL
+                {$this->column_name}  TEXT NOT NULL,
                 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             )",
             default => throw new RuntimeException("Unsupported database driver: " . $driver),
